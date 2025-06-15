@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Random Start Flicker Animation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Alegreya+Sans+SC:wght@100&display=swap" rel="stylesheet">
+  <style>
+    :root {
+  --dark-color: #000000;
+}
+
+
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Alegreya Sans SC', sans-serif;
+      font-weight: 100;
+    }
+    .hello{
+       position: fixed;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  filter: blur(0.1vmin);
+  background-image: radial-gradient(ellipse at top, transparent 0%, var(--dark-color)), radial-gradient(ellipse at bottom, var(--dark-color), rgba(145, 233, 255, 0.2)), repeating-linear-gradient(220deg, black 0px, black 19px, transparent 19px, transparent 22px), repeating-linear-gradient(189deg, black 0px, black 19px, transparent 19px, transparent 22px), repeating-linear-gradient(148deg, black 0px, black 19px, transparent 19px, transparent 22px), linear-gradient(90deg, #00fffa, #f0f0f0);
+
+    }
+  
+
+    .stars {
+       position: fixed;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  filter: blur(0.1vmin);
+  background-image: radial-gradient(ellipse at top, transparent 0%, var(--dark-color)), radial-gradient(ellipse at bottom, var(--dark-color), rgba(145, 233, 255, 0.2)), repeating-linear-gradient(220deg, black 0px, black 19px, transparent 19px, transparent 22px), repeating-linear-gradient(189deg, black 0px, black 19px, transparent 19px, transparent 22px), repeating-linear-gradient(148deg, black 0px, black 19px, transparent 19px, transparent 22px), linear-gradient(90deg, #00fffa, #f0f0f0);
+
+    }
+
+    @keyframes moveStars {
+      from { background-position: 0 0; }
+      to { background-position: -10000px 5000px; }
+    }
+
+    .text {
+      position: relative;
+      z-index: 1;
+      font-size: 1.5rem;
+      color: #e0b3ff;
+      text-shadow:
+        0 0 2px #e0b3ff,
+        0 0 4px #d580ff,
+        0 0 6px #d580ff;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1em;
+      font-weight: 100;
+      justify-content: center;
+    }
+
+    .word {
+      display: flex;
+      gap: 0.5em;
+    }
+
+    .word span {
+      opacity: 0;
+      animation: flickerReveal 2s forwards;
+    }
+
+    @keyframes flickerReveal {
+      0% { opacity: 0.1; }
+      10% { opacity: 0.6; }
+      20% { opacity: 0.2; }
+      30% { opacity: 0.8; }
+      40% { opacity: 0.3; }
+      50% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+
+    .open-button {
+      margin-top: 2rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1.2rem;
+      color: #fff;
+      background-color: rgba(0, 0, 0, 0.4);
+      border: 2px solid transparent;
+      border-radius: 21px;
+      cursor: pointer;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .open-button:hover {
+      background-color: #8e44ad;
+      border-color: #c87cff;
+      box-shadow: 0 0 12px #c87cff;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      display: none;
+    }
+  </style>
+</head>
+<body class="hello">
+  <div class="stars"></div>
+  <div class="text" id="text"></div>
+  <button class="open-button" onclick="showFlower()">✨ Open</button>
+  <iframe id="flowerFrame" src="flowerpage.html"></iframe>
+  <audio id="birthdayMusic" src="birthday-music.mp3"></audio>
+
+  <script>
+    const message = "I Have Something For You";
+    const textContainer = document.getElementById("text");
+    const chars = message.split("");
+    const indices = [...Array(chars.length).keys()];
+    const shuffled = indices.sort(() => Math.random() - 0.5);
+
+    let wordContainer = null;
+    chars.forEach((char, i) => {
+      if (char === " ") {
+        wordContainer = null;
+        return;
+      }
+      if (!wordContainer) {
+        wordContainer = document.createElement("div");
+        wordContainer.className = "word";
+        textContainer.appendChild(wordContainer);
+      }
+      const span = document.createElement("span");
+      span.textContent = char;
+      const delay = shuffled.indexOf(i) * 0.2;
+      span.style.animationDelay = `${delay}s`;
+      wordContainer.appendChild(span);
+    });
+
+    function showFlower() {
+  document.getElementById("flowerFrame").style.display = "block";
+  const music = document.getElementById("birthdayMusic");
+  music.play();
+}
+
+  </script>
+</body>
+</html>
